@@ -62,7 +62,7 @@ export class CombatAudio {
     const context=this.context, gain=this.gain;
     if(!context || !gain || context.state!=='running' || this.muted || this.volume===0) return;
     const now=context.currentTime;
-    const interval=event.kind==='death'?.12:event.kind==='shot'?.08:.06;
+    const interval=event.kind==='step'?.16:event.kind==='death'?.12:event.kind==='shot'?.08:.06;
     if(now-(this.last.get(event.kind)??-Infinity)<interval || this.active.size>=12) return;
     this.last.set(event.kind,now);
     const buffer=this.buffers.get(event.kind);
@@ -74,8 +74,8 @@ export class CombatAudio {
     } else {
       // Missing or undecodable files get a bounded, procedurally generated click.
       const oscillator=context.createOscillator(), envelope=context.createGain();
-      oscillator.frequency.value=event.kind==='shot'?180:420;
-      envelope.gain.setValueAtTime(.08,now);
+      oscillator.frequency.value=event.kind==='step'?96:event.kind==='shot'?180:420;
+      envelope.gain.setValueAtTime(event.kind==='step'?.025:.08,now);
       envelope.gain.exponentialRampToValueAtTime(.001,now+.05);
       oscillator.connect(envelope);envelope.connect(gain);
       this.active.add(oscillator);

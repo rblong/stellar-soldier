@@ -151,7 +151,7 @@ try {
     await production.goto(`${process.env.VERIFY_PREVIEW_URL}/?verify=1`,{waitUntil:'networkidle'});
     await production.waitForFunction(()=>!document.querySelector('#primary').disabled);
     assert.equal(await production.evaluate(()=>typeof window.__verification),'undefined');
-    assert.match(await production.locator('#asset-status').textContent(),/程序化/);
+    assert.match(await production.locator('#asset-status').textContent(),/程序化|原创分层步态/);
     await production.locator('#primary').click();
     await production.waitForFunction(()=>Number(document.querySelector('#kills').textContent)>0,{},{timeout:15000});
     await production.screenshot({path:'artifacts/screenshots/phase1-public-natural-combat.png',fullPage:true});

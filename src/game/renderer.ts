@@ -1,18 +1,32 @@
 import { RULES, clamp, type Simulation, type Enemy } from './simulation.ts';
 import type { Assets } from './assets.ts';
+import { directionFrame, walkFrame, marineCell, muzzleOffset, MARINE_DRAW, WALK_CYCLE } from './motion.ts';
 
 export class Renderer {
   context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
   assets: Assets;
   fallback=false;
+  deathAge=0;
   constructor(canvas:HTMLCanvasElement,assets:Assets) {
     this.canvas=canvas;this.assets=assets;
     this.context=canvas.getContext('2d',{alpha:false})!;
     canvas.width=RULES.viewWidth;canvas.height=RULES.viewHeight;
   }
 
-  draw(game:Simulation):void {
+  unitPreview(game:Simulation):string {
+    const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;
+    const previous=this.context;
+    try {
+      this.context=canvas.getContext('2d')!;this.context.imageSmoothingEnabled=false;
+      this.context.translate(64-game.player.x,70-game.player.y);
+      this.soldier(game);
+      return canvas.toDataURL('image/png');
+    } finally {this.context=previous;}
+  }
+
+  draw(game:Simulation,presentationDelta=0):void {
+    this.deathAge=game.dead?Math.min(.7,this.deathAge+presentationDelta):0;
     const c=this.context, camera=game.camera(), p=game.player;
     c.imageSmoothingEnabled=false;
     c.fillStyle='#252b24';c.fillRect(0,0,1280,720);
@@ -34,16 +48,23 @@ export class Renderer {
       for(let n=0;n<7;n++) {const a=n*2.4;c.fillRect(Math.cos(a)*(7+effect.age*36),Math.sin(a)*(7+effect.age*36),3,2);}
       c.restore();
     }
+    for(const effect of game.effects.filter(e=>e.kind==='step')) {
+      c.save();c.translate(effect.x,effect.y);c.globalAlpha=(1-effect.age/.25)*.3;c.fillStyle='#aba786';
+      for(let i=0;i<3;i++){c.beginPath();c.ellipse(i*3-3,-effect.age*10+i,1+effect.age*9,1+effect.age*4,0,0,Math.PI*2);c.fill();}
+      c.restore();
+    }
     const entities=[...game.enemies.map(e=>({y:e.y,draw:()=>this.enemy(e)})),{y:p.y,draw:()=>this.soldier(game)}];
     entities.sort((a,b)=>a.y-b.y).forEach(e=>e.draw());
     for(const b of game.bullets) {
       c.strokeStyle='#f9d99a';c.lineWidth=2;c.beginPath();c.moveTo(b.x-b.dx*17,b.y-b.dy*17);c.lineTo(b.x,b.y);c.stroke();
       c.fillStyle='#fff8d4';c.fillRect(b.x-1,b.y-1,2,2);
     }
-    for(const e of game.effects.filter(e=>e.kind!=='death')) {
-      c.save();c.translate(e.x,e.y);
+    for(const e of game.effects.filter(e=>e.kind!=='death'&&e.kind!=='step')) {
+      c.save();
+      const muzzle=muzzleOffset(p.angle,-1.8*Math.max(0,1-(game.time-p.lastShotAt)/.07));
+      c.translate(e.kind==='shot'?p.x+muzzle.x:e.x,e.kind==='shot'?p.y+muzzle.y:e.y);
       if(e.kind==='shot') {
-        c.rotate(e.angle);
+        c.rotate(p.angle);
         const image=this.assets.images.get('muzzle-flash');
         if(image) c.drawImage(image,Math.min(3,Math.floor(e.age*40))*32,0,32,32,-8,-16,32,32);
         else {c.fillStyle='#fff0bb';c.beginPath();c.moveTo(0,-4);c.lineTo(16,0);c.lineTo(0,4);c.fill();}
@@ -66,6 +87,7 @@ export class Renderer {
       c.save();c.translate(p.x-camera.x,p.y-camera.y);
       c.strokeStyle='#e1c17a60';c.lineWidth=1;
       c.beginPath();c.arc(0,0,25,0,Math.PI*2);c.stroke();
+      c.strokeStyle='#e9d08f';c.lineWidth=2;c.beginPath();c.moveTo(-5,-49);c.lineTo(0,-45);c.lineTo(5,-49);c.stroke();
       c.restore();
     }
   }
@@ -93,31 +115,61 @@ export class Renderer {
 
   private soldier(game:Simulation):void {
     const c=this.context,p=game.player;
-    const firing=game.effects.some(e=>e.kind==='shot'&&e.age<.07);
-    // Visual offsets are derived, never accumulated on the logical position.
-    const recoil=firing?-1.8:0, bob=p.moving?Math.sin(p.travel/7)*.8:0;
+    const shotAge=game.time-p.lastShotAt;
+    const recoil=-1.8*Math.max(0,1-shotAge/.07);
+    const motion=!this.fallback&&!this.assets.forceFallback?this.assets.images.get('sc-marine-motion'):null;
     c.save();c.translate(p.x,p.y);
     c.fillStyle='#00000070';c.beginPath();c.ellipse(2,9,16,7,0,0,Math.PI*2);c.fill();
-    const directional=!this.fallback&&!this.assets.forceFallback?this.assets.images.get('sc-marine-directions'):null;
-    const single=!this.fallback&&!this.assets.forceFallback?this.assets.images.get('sc-marine'):null;
-    const frame=((Math.round((p.angle+Math.PI/2)*8/Math.PI)%16)+16)%16;
-    if(directional) c.drawImage(directional,0,frame*96,96,96,-34+Math.cos(p.angle)*recoil,-38+bob+Math.sin(p.angle)*recoil,68,68);
-    else if(single) {c.save();c.rotate(p.angle+Math.PI/2);c.drawImage(single,-32,-34,64,64);c.restore();}
-    else {
-      c.rotate(p.angle);
-      c.fillStyle='#192a31';c.fillRect(-12,-10,23,20);
-      c.fillStyle='#7196a1';c.fillRect(-10,-12,18,24);
-      c.fillStyle='#a8c0c0';c.fillRect(-8,-8,17,16);
-      c.fillStyle='#243b46';c.fillRect(-4,-6,11,12);
-      c.fillStyle='#68e0e1';c.fillRect(5,-4,3,8);
-      c.fillStyle='#546c73';c.fillRect(5+recoil,3,18,5);
-      c.fillStyle='#111d24';c.fillRect(17+recoil,3,8,4);
-      c.fillStyle='#d4c697';c.fillRect(-10,-13,7,5);c.fillRect(-10,8,7,5);
+    if(game.dead && motion) {
+      const frame=Math.min(7,Math.floor(this.deathAge/.075));
+      c.globalAlpha=1-Math.max(0,this.deathAge-.45)*1.5;
+      c.drawImage(motion,frame*64,832,64,64,-64,-78,128,128);
+    } else if(motion) {
+      const direction=directionFrame(p.angle),legDirection=directionFrame(p.moving?p.moveAngle:p.angle);
+      const legs=marineCell(legDirection,p.moving?4+walkFrame(p.stride,true):0);
+      const upper=marineCell(direction,shotAge<.065?2:shotAge<.18?1:0);
+      const {x,y,split,overlap}=MARINE_DRAW;
+      // Stable two-layer body: gait follows velocity; shoulders and rifle follow aim.
+      c.drawImage(motion,legs.x,legs.y+split,44,44-split,x,y+split*2,88,(44-split)*2);
+      c.drawImage(motion,upper.x,upper.y,44,split+overlap,x+Math.cos(p.angle)*recoil,y+Math.sin(p.angle)*recoil,88,(split+overlap)*2);
+    } else {
+      this.proceduralSoldier(game,recoil);
     }
     c.restore();
-    if(game.time<game.protectedUntil) {
+    if(!game.dead && game.time-p.hurtAt<.09) {
+      c.fillStyle=`rgba(255,220,173,${(1-(game.time-p.hurtAt)/.09)*.5})`;
+      c.beginPath();c.ellipse(p.x,p.y-18,13,17,0,0,Math.PI*2);c.fill();
+    }
+    if(!game.dead && game.time<game.protectedUntil) {
       c.strokeStyle='#f5c087';c.lineWidth=1.5;c.beginPath();c.arc(p.x,p.y,23,0,Math.PI*2);c.stroke();
     }
+  }
+
+  private proceduralSoldier(game:Simulation,recoil:number):void {
+    const c=this.context,p=game.player;
+    if(game.dead){c.rotate(Math.min(1,this.deathAge/.35)*1.4);c.scale(1,1-Math.min(1,this.deathAge/.35)*.5);c.globalAlpha=.8;}
+    const angle=p.moving?p.moveAngle:p.angle,phase=p.stride/WALK_CYCLE*Math.PI*2;
+    const forward={x:Math.cos(angle),y:Math.sin(angle)},side={x:-forward.y,y:forward.x};
+    c.lineCap='round';
+    for(const leg of [-1,1]) {
+      const stride=p.moving?Math.sin(phase+(leg===1?0:Math.PI))*9:0;
+      const hip={x:side.x*leg*5,y:-5+side.y*leg*5};
+      const foot={x:side.x*leg*6+forward.x*stride,y:11+side.y*leg*4+forward.y*stride};
+      c.strokeStyle='#30424a';c.lineWidth=7;c.beginPath();c.moveTo(hip.x,hip.y);c.lineTo(foot.x,foot.y);c.stroke();
+      c.fillStyle='#91a5a0';c.beginPath();c.ellipse(foot.x,foot.y,5,3,angle,0,Math.PI*2);c.fill();
+      c.strokeStyle='#718684';c.lineWidth=3;c.beginPath();c.moveTo(hip.x,hip.y+1);c.lineTo((hip.x+foot.x)/2,(hip.y+foot.y)/2);c.stroke();
+    }
+    c.save();c.translate(Math.cos(p.angle)*recoil,-17+Math.sin(p.angle)*recoil);c.rotate(p.angle);
+    c.fillStyle='#20353d';c.fillRect(-12,-12,21,24);
+    c.fillStyle='#7497a0';c.fillRect(-10,-11,19,22);
+    c.fillStyle='#b1c4be';c.fillRect(-10,-15,8,7);c.fillRect(-10,8,8,7);
+    c.fillStyle='#223e48';c.beginPath();c.ellipse(0,0,7,8,0,0,Math.PI*2);c.fill();
+    c.fillStyle='#6bd7d9';c.fillRect(4,-5,3,10);
+    c.restore();
+    const muzzle=muzzleOffset(p.angle,recoil);
+    const hand={x:Math.cos(p.angle)*5-Math.sin(p.angle)*6,y:-17+Math.sin(p.angle)*5+Math.cos(p.angle)*6};
+    c.strokeStyle='#23353a';c.lineWidth=7;c.beginPath();c.moveTo(hand.x,hand.y);c.lineTo(muzzle.x,muzzle.y);c.stroke();
+    c.strokeStyle='#99a49b';c.lineWidth=3;c.beginPath();c.moveTo(hand.x,hand.y-1);c.lineTo(muzzle.x,muzzle.y-1);c.stroke();
   }
 
   private enemy(e:Enemy):void {

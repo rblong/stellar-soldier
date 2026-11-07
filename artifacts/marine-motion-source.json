@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "path": "images/sc-marine-motion.png",
+  "width": 1152,
+  "height": 896,
+  "sourceSha256": "ec9887d0c5b0d916ca5f8759b803b8d0154915dab1fe176605c82f5320aff9dd",
+  "directions": 16,
+  "walkFrames": 9,
+  "localOnly": true,
+  "sourceRevision": "ab3a5bf749ec56d0929d970286a059c00685e4c9",
+  "copiedWithoutModification": true,
+  "sourceProject": "starport-defense",
+  "runtimeState": "See current motion verification, not source existence alone"
+}

@@ -37,6 +37,7 @@ export class Assets {
       const manifest=await response.json() as LocalManifest;
       if (!manifest.available) return;
       const jobs:Promise<unknown>[]=[];
+      jobs.push(this.loadMarineMotion(base));
       // Fail per item; one bad sheet must not discard the other valid textures.
       for (const key of ['sc-marine','sc-enemy-zergling']) {
         const path=manifest.images?.[key];
@@ -50,9 +51,19 @@ export class Assets {
         }
       }
       await Promise.all(jobs);
-      this.local=this.images.has('sc-marine-directions') || this.images.has('sc-marine');
+      this.local=this.images.has('sc-marine-motion');
       for (const audio of manifest.audio??[]) if (/^[A-Za-z.]+$/.test(audio)) this.localAudio.add(audio);
     } catch { /* Optional local assets are never required for the game. */ }
+  }
+
+  private async loadMarineMotion(base:string):Promise<void> {
+    try {
+      const response=await fetch(`${base}assets/sc-local/marine-motion.json`,{signal:AbortSignal.timeout(2500)});
+      if(!response.ok)return;
+      const metadata=await response.json();
+      if(metadata.version!==1 || metadata.width!==1152 || metadata.height!==896 || metadata.walkFrames!==9 || metadata.directions!==16 || !validPath(metadata.path))return;
+      await this.image('sc-marine-motion',`${base}assets/sc-local/${metadata.path}`,{width:1152,height:896});
+    } catch { /* No full gait atlas: render the animated procedural soldier. */ }
   }
 }
 

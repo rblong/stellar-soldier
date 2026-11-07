@@ -12,7 +12,8 @@
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "build": "npm run typecheck && vite build && node scripts/check-public-build.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "verify:browser": "node scripts/verify-phase1.mjs"
+    "verify:browser": "node scripts/verify-phase1.mjs",
+    "verify:motion": "node scripts/verify-marine-motion.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
