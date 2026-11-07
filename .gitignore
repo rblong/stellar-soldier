@@ -7,7 +7,10 @@ coverage/
 !.env.example
 *.log
 *.tsbuildinfo
+__pycache__/
+*.pyc
 .DS_Store
 Thumbs.db
 public/assets/sc-local/
 artifacts/starcraft1/
+artifacts/screenshots/local-*.png

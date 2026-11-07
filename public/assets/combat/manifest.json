@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "origin": "Original procedural assets for Stellar Soldier",
+  "images": {
+    "bullet-basic": {
+      "path": "images/bullet-basic.png",
+      "width": 32,
+      "height": 16,
+      "use": "Faces right; collision radius configured separately"
+    },
+    "bullet-pierce": {
+      "path": "images/bullet-pierce.png",
+      "width": 32,
+      "height": 16,
+      "use": "Faces right; collision radius configured separately"
+    },
+    "bullet-ricochet": {
+      "path": "images/bullet-ricochet.png",
+      "width": 32,
+      "height": 16,
+      "use": "Faces right; collision radius configured separately"
+    },
+    "bullet-fire": {
+      "path": "images/bullet-fire.png",
+      "width": 32,
+      "height": 16,
+      "use": "Faces right; collision radius configured separately"
+    },
+    "bullet-cryo": {
+      "path": "images/bullet-cryo.png",
+      "width": 32,
+      "height": 16,
+      "use": "Faces right; collision radius configured separately"
+    },
+    "bullet-heavy": {
+      "path": "images/bullet-heavy.png",
+      "width": 32,
+      "height": 16,
+      "use": "Faces right; collision radius configured separately"
+    },
+    "status-burn": {
+      "path": "images/status-burn.png",
+      "width": 64,
+      "height": 64,
+      "use": "Attach to affected enemy; remove on state expiry"
+    },
+    "status-slow": {
+      "path": "images/status-slow.png",
+      "width": 64,
+      "height": 64,
+      "use": "Attach to affected enemy; remove on state expiry"
+    },
+    "skill-pierce": {
+      "path": "images/skill-pierce.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-ricochet": {
+      "path": "images/skill-ricochet.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-explosive": {
+      "path": "images/skill-explosive.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-arc": {
+      "path": "images/skill-arc.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-incendiary": {
+      "path": "images/skill-incendiary.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-cryo": {
+      "path": "images/skill-cryo.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-heavy": {
+      "path": "images/skill-heavy.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    },
+    "skill-overdrive": {
+      "path": "images/skill-overdrive.png",
+      "width": 64,
+      "height": 64,
+      "use": "Skill chip and equipped slot icon"
+    }
+  },
+  "spritesheets": {
+    "impact-kinetic": {
+      "path": "images/impact-kinetic.png",
+      "width": 512,
+      "height": 64,
+      "use": "One-shot impact; damage is simulated separately",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "suggestedFps": 24,
+      "loop": false
+    },
+    "impact-explosion": {
+      "path": "images/impact-explosion.png",
+      "width": 512,
+      "height": 64,
+      "use": "One-shot impact; damage is simulated separately",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "suggestedFps": 24,
+      "loop": false
+    },
+    "impact-electric": {
+      "path": "images/impact-electric.png",
+      "width": 512,
+      "height": 64,
+      "use": "One-shot impact; damage is simulated separately",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "suggestedFps": 24,
+      "loop": false
+    },
+    "impact-fire": {
+      "path": "images/impact-fire.png",
+      "width": 512,
+      "height": 64,
+      "use": "One-shot impact; damage is simulated separately",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "suggestedFps": 24,
+      "loop": false
+    },
+    "impact-cryo": {
+      "path": "images/impact-cryo.png",
+      "width": 512,
+      "height": 64,
+      "use": "One-shot impact; damage is simulated separately",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "suggestedFps": 24,
+      "loop": false
+    },
+    "impact-heavy": {
+      "path": "images/impact-heavy.png",
+      "width": 512,
+      "height": 64,
+      "use": "One-shot impact; damage is simulated separately",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "suggestedFps": 24,
+      "loop": false
+    },
+    "muzzle-flash": {
+      "path": "images/muzzle-flash.png",
+      "width": 128,
+      "height": 32,
+      "use": "Faces right; anchor at (8,16), rotate to barrel direction",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 4,
+      "suggestedFps": 40,
+      "loop": false
+    }
+  },
+  "audio": {
+    "rifle": {
+      "path": "audio/rifle.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.09,
+      "status": "Draft; listening QA pending"
+    },
+    "impact": {
+      "path": "audio/impact.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.075,
+      "status": "Draft; listening QA pending"
+    },
+    "explosion": {
+      "path": "audio/explosion.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.28,
+      "status": "Draft; listening QA pending"
+    },
+    "electric": {
+      "path": "audio/electric.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.16,
+      "status": "Draft; listening QA pending"
+    },
+    "fire": {
+      "path": "audio/fire.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.14,
+      "status": "Draft; listening QA pending"
+    },
+    "cryo": {
+      "path": "audio/cryo.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.16,
+      "status": "Draft; listening QA pending"
+    },
+    "heavy": {
+      "path": "audio/heavy.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.13,
+      "status": "Draft; listening QA pending"
+    },
+    "pickup": {
+      "path": "audio/pickup.wav",
+      "sampleRate": 22050,
+      "channels": 1,
+      "bits": 16,
+      "duration": 0.22,
+      "status": "Draft; listening QA pending"
+    }
+  }
+}

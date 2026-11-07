@@ -1,0 +1,97 @@
+{
+  "sourceProject": "starport-defense",
+  "localOnly": true,
+  "runtimeIntegration": "not implemented",
+  "files": [
+    {
+      "path": "images/sc-marine.png",
+      "sha256": "ee18e6a3459d9decd2702bcde961ce209ce62a64fc1f4d0ebdf40e3e5e0b05cd",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-enemy-zergling.png",
+      "sha256": "53d42ec99d45c7a57289263baafa5a03c280cb347f8487bcc196269359b34842",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-enemy-hydralisk.png",
+      "sha256": "562cad06c2fcb759f0b3e756c80e9b02743a29f93a04affb1bc76c8e39e8d996",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-enemy-ultralisk.png",
+      "sha256": "7f4c9520bb7a60f673a6cd493a9a4f217693434dd112c729967fdb863ca94d07",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-marine-directions.png",
+      "sha256": "c8c61ac00370ddb5a7ab2d62394825d5398f39af656e36c578a043af97a6df66",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-enemy-zergling-walk.png",
+      "sha256": "8c97049f71eff1159ecd4c1483b22ee5215c3960f97cedcd87722c8c4a471deb",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-enemy-hydralisk-walk.png",
+      "sha256": "4fa3ea12e486bc656077d5630fc5a0a4f5bbc46c1938c1df1253f4b3e14c5ed1",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-enemy-ultralisk-walk.png",
+      "sha256": "f08d614640179f0dffdbff0ceb43abb7fa67f5e0389da64de3b14cc2647cd246",
+      "matchesSource": true
+    },
+    {
+      "path": "images/sc-explosion.png",
+      "sha256": "462f286e7bfc4031f7bc5082ba19156c972f8e405f838a8731c921b95670e03d",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/Button.wav",
+      "sha256": "fba70ecb2613da559acbc318702e8f7e1e199a9c22618be40139e9bbcb3e78af",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/Marine.selected.wav",
+      "sha256": "5b46baf7f3d4d3e8be8663b2c9f12749018aede58b0aeffae8ac807fce02a4e0",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/Marine.attack.wav",
+      "sha256": "f28c08cbe7644febd57c11cd5c0c1198b7f035078bb6607b115473db1fddbbed",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/upgrade.Terran.wav",
+      "sha256": "da91fc9169fa43536c9d2ed530c62bb34e92342750f43db860bca5e037fdd8b0",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/Zergling.death.wav",
+      "sha256": "a1b7ca5250bac2ffaf0cfd3e6a2fd5923e3bf9dc3e9df017cc52521a4fd504f0",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/Hydralisk.death.wav",
+      "sha256": "28088b9f97bf17143f67340bf2b3407188631ca3d322824eabf957ef13eaec02",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/Ultralisk.death.wav",
+      "sha256": "6b5f13254b0e490c94d3002375091c5196ab303fb70b3f1c695dd550edb74ebc",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/TerranBuilding.death.wav",
+      "sha256": "d24b2c3162aae8b0197426943199acc428b783b807dc21931eaf85fbbf6af413",
+      "matchesSource": true
+    },
+    {
+      "path": "audio/YouLose.wav",
+      "sha256": "fd9f7ef0bcd45a0d4613aba7f804b7eea4860c60a06235aba4a0a694cc4bb146",
+      "matchesSource": true
+    }
+  ]
+}

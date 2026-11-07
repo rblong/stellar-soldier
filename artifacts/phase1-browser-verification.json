@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-07",
+  "browser": "145.0.7632.6",
+  "platform": "win32",
+  "cpu": "Intel(R) Core(TM) Ultra 7 255H",
+  "viewport": "1440x1080, DPR 1",
+  "scope": "Phase 1 only; no audio listening or balance claim",
+  "checks": [
+    {
+      "name": "optional local Marine directions and Zergling walk sheets loaded",
+      "passed": true
+    },
+    {
+      "name": "audio unlocked after real click; four combat buffers decoded (not listening QA)",
+      "passed": true
+    },
+    {
+      "name": "keyboard movement and following camera",
+      "passed": true,
+      "distance": 113.66666666666902
+    },
+    {
+      "name": "Escape freezes simulation",
+      "passed": true
+    },
+    {
+      "name": "automatic rifle fire collides and kills target",
+      "passed": true
+    },
+    {
+      "name": "contact attack decreases health and updates HUD",
+      "passed": true
+    },
+    {
+      "name": "blur handler pauses and clears held movement (synthetic blur event)",
+      "passed": true
+    },
+    {
+      "name": "mute stops active audio and volume slider updates independent SFX setting",
+      "passed": true
+    },
+    {
+      "name": "fatal contact and three restarts clear run state",
+      "passed": true
+    },
+    {
+      "name": "SFX volume and mute persist across reload",
+      "passed": true
+    },
+    {
+      "name": "forced fallback completes shooting, death and restart",
+      "passed": true
+    },
+    {
+      "name": "missing manifest automatically falls back and remains playable",
+      "passed": true
+    },
+    {
+      "name": "one broken sheet falls back independently; other local textures survive",
+      "passed": true
+    },
+    {
+      "name": "missing audio files do not block combat",
+      "passed": true
+    },
+    {
+      "name": "natural offscreen spawning reaches combat without injected enemies",
+      "passed": true,
+      "time": 1.0500000000000012,
+      "kills": 1
+    },
+    {
+      "name": "800px window keeps start and pause controls accessible",
+      "passed": true,
+      "actualViewport": {
+        "width": 800,
+        "height": 700
+      }
+    },
+    {
+      "name": "public production build starts, naturally spawns and kills; no mutation API",
+      "passed": true
+    },
+    {
+      "name": "no uncaught browser page errors",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/local-phase1-combat.png",
+      "localOnly": true,
+      "scenario": "40 bugs injected using dev verification API; not natural spawn density"
+    },
+    {
+      "path": "screenshots/phase1-fallback-combat.png",
+      "localOnly": false,
+      "scenario": "40 injected bugs; original procedural units only"
+    },
+    {
+      "path": "screenshots/phase1-small-window.png",
+      "localOnly": false,
+      "scenario": "800px window, original fallback menu"
+    },
+    {
+      "path": "screenshots/phase1-public-natural-combat.png",
+      "localOnly": false,
+      "scenario": "Actual public production build, natural spawning; no debug API or original StarCraft pack"
+    }
+  ],
+  "passed": true,
+  "pageErrors": []
+}
